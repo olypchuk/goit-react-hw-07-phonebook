@@ -27,6 +27,10 @@ const StyledContainer=styled.div`
     }
     `
 ContactsList.propTypes = {
-  data: PropTypes.array.isRequired,
+  data: PropTypes.arrayOf(PropTypes.exact({
+  id:PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  number:PropTypes.string.isRequired
+  })),
   onClick:PropTypes.func.isRequired
     }

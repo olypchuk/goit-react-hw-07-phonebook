@@ -3,9 +3,8 @@ import shortid from "shortid";
 import { StyledApp } from "./Container/Container.styled";
 import { ContactsList } from "./ContactsList/ContactsList";
 import { Filter } from "./Filter/Filter";
-import { Form } from "./Form/Form";
-
-
+import { FormByFormik } from "./Form/Form";
+import { Notify } from "notiflix";
 
 export class App extends Component  {
 state = {
@@ -18,11 +17,11 @@ state = {
   filter: '',
   }
   
-  addContacts = ({ name, number }) => {
+  addContact = ({ name, number }) => {
     const card = { id: shortid.generate(), name, number }
     const findSameNumber=this.state.contacts.find(contact=>contact.name.toLowerCase()===name.toLowerCase())
     if (findSameNumber) {
-      alert("this name already in list")
+      Notify.failure("this name already in list")
       return
    }
   
@@ -51,10 +50,10 @@ state = {
     return (
       <StyledApp>
         <h1>Phonebook</h1>
-        <Form onSubmit={this.addContacts} />
+        <FormByFormik addContact={this.addContact} />
         <h2>Contacts</h2>
         <Filter onChange={this.filterContacts} value={filter}/>
-        <ContactsList data={filteredArray} onClick={this.deleteContacts} ></ContactsList>    
+        <ContactsList data={filteredArray} onClick={this.deleteContacts} />  
      
      </StyledApp>
     )
