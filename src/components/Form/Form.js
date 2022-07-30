@@ -6,9 +6,21 @@ import { Formik, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup'
 
 const schema = yup.object().shape({
-  name: yup.string().min(6).max(15).required("Please enter name"),
-  number:yup.number().min(100).required("Please enter number")
+  name: yup.string()
+    .min(6)
+    .max(15)
+    .required("Please enter name")
+    .matches(/^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/, "Must be only letters"),
+
+  number: yup.string()
+    .required('Please enter number')
+    .min(6)
+    .max(15)
+    .matches(/\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/, "Must be only digits")
+
+
 })
+
 export const INITIAL_STATE = {
   name: '',
   number: ''
@@ -20,7 +32,6 @@ let showId = shortid.generate()
 
 export const FormByFormik = ({ addContact }) => {
   const handleSubmit = (value, { resetForm }) => {
- 
      addContact(value)
      resetForm()
   }
@@ -35,7 +46,6 @@ export const FormByFormik = ({ addContact }) => {
         type="text"
         name="name"
         placeholder="enter name"
-        pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
         />
       <ErrorMessage name="name"/>
      <label htmlFor="number">Number</label> 
@@ -44,7 +54,6 @@ export const FormByFormik = ({ addContact }) => {
         type="tel"
         name="number"
         placeholder="enter number"
-        pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
         />
       <ErrorMessage name="number"/>
         <button type="submit">add contact</button>

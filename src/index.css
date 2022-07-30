@@ -46,6 +46,6 @@ button{
   width: 66%;
  }
  label{
-  display: contents;
+  display: block;
 border-radius:4px ;
 }
