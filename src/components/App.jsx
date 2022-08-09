@@ -11,7 +11,6 @@ export function App() {
   const [contacts, setContacts] = useState(JSON.parse(localStorage.getItem('contacts'))??[]);
   const [filter, setFilter] = useState('');
 
-   
   useEffect(() => {
     const parsedValue = JSON.parse(localStorage.getItem('contacts'))
     if (parsedValue) { return setContacts(parsedValue)}
