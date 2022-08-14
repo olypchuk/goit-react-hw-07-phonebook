@@ -7,7 +7,7 @@ import * as yup from 'yup'
 
 const schema = yup.object().shape({
   name: yup.string()
-    .min(6)
+   
     .max(15)
     .required("Please enter name")
     .matches(/^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/, "Must be only letters"),
