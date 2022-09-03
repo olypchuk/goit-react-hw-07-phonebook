@@ -5,6 +5,7 @@ import { PropTypes } from "prop-types"
 import { Formik, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup'
 
+
 const schema = yup.object().shape({
   name: yup.string()
    
@@ -31,9 +32,13 @@ let showId = shortid.generate()
 //////переробив на формік......
 
 export const FormByFormik = ({ addContact }) => {
+  
+// export const FormByFormik = ({ addContact }) => {
+  
   const handleSubmit = (value, { resetForm }) => {
-     addContact(value)
-     resetForm()
+
+    addContact(value)
+    resetForm()
   }
   return (<Formik
     initialValues={INITIAL_STATE}

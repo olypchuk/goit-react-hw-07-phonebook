@@ -3,7 +3,7 @@ import { PropTypes } from "prop-types";
 export const ContactsList = ({ data,onClick }) => {
 
   return <ul>
-    {data.map(item => { 
+    {data?.map(item => { 
       const { id, name, number } = item;
         return <StyledContainer key={id} ><li>{name} :{number}
        </li><button type="button" onClick={()=>onClick(id)}>delete</button></StyledContainer>

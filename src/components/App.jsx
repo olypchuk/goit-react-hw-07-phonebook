@@ -1,52 +1,83 @@
 import React from "react";
-import shortid from "shortid";
+
 import { StyledApp } from "./Container/Container.styled";
 import { ContactsList } from "./ContactsList/ContactsList";
 import { Filter } from "./Filter/Filter";
 import { FormByFormik } from "./Form/Form";
 import { Notify } from "notiflix";
-import { useState ,useEffect} from "react";
+
+import { useDispatch ,useSelector} from "react-redux";
+import { addContacts,removeContacts,filterContacts } from "redux/actions";
+import { filterHandleChange } from "redux/selectors";
 
 export function App() {
-  const [contacts, setContacts] = useState(JSON.parse(localStorage.getItem('contacts'))??[]);
-  const [filter, setFilter] = useState('');
 
-  useEffect(() => {
-    const parsedValue = JSON.parse(localStorage.getItem('contacts'))
-    if (parsedValue) { return setContacts(parsedValue)}
+  const contacts = useSelector(store => store.contacts)
+  const filter = useSelector(store => store.filter)
+
+  const sortedContactsFunction= () => [...contacts].sort((a, b) => a.name.localeCompare(b.name))
  
-  }, [])
+  const sortedContacts = sortedContactsFunction()
 
-  useEffect(() => {localStorage.setItem('contacts',JSON.stringify(contacts))})
-      
- const addContact = ({ name, number }) => {
-    const card = { id: shortid.generate(), name, number }
-    const findSameNumber=contacts.find(contact=>contact.name.toLowerCase()===name.toLowerCase())
+  const dispatch = useDispatch()
+
+
+
+
+  // const [contacts, setContacts] = useState(JSON.parse(localStorage.getItem('contacts'))??[]);
+  // const [filter, setFilter] = useState('');
+
+  // useEffect(() => {
+  //   const parsedValue = JSON.parse(localStorage.getItem('contacts'))
+  //   if (parsedValue) { return setContacts(parsedValue)}
+ 
+  // }, [])
+
+  const addContact = (payload) => {
+
+ const findSameNumber=sortedContacts?.find(contact=>contact.name.toLowerCase()===payload.name.toLowerCase())
     if (findSameNumber) {
       Notify.failure("this name already in list")
       return
-   }
-const sorted = [card, ...contacts].sort((a, b) => a.name.localeCompare(b.name) )
-setContacts(sorted)
-
-  }
+       } 
+    dispatch(addContacts(payload))
+  return sortedContacts
   
-  const filterContacts = (e) =>setFilter(e.target.value)
-
-  const filterHandleChange = () => {
-    const filteredArray = contacts.filter(contact => contact.name.toLowerCase().trim().includes(filter.toLowerCase().trim()) || contact.number.includes(filter.trim()))
-    return filteredArray
-  }
-  const filteredArray=filterHandleChange()
+    
   
-  const deleteContacts = id => setContacts(contacts.filter(contact=>contact.id!==id))
+  }
+  // useEffect(() => {localStorage.setItem('contacts',JSON.stringify(contacts))})
+      
+//  const addContact = ({ name, number }) => {
+//    const card = { id: shortid.generate(), name, number }
+
+//     const findSameNumber=contacts.find(contact=>contact.name.toLowerCase()===name.toLowerCase())
+//     if (findSameNumber) {
+//       Notify.failure("this name already in list")
+//       return
+//    }
+// const sorted = [card, ...contacts].sort((a, b) => a.name.localeCompare(b.name) )
+// setContacts(sorted)
+
+//   }
+  
+  const setFilterContacts = (e) =>dispatch(filterContacts(e.target.value))
+
+
+  const filteredArray=filterHandleChange(sortedContacts,filter)
+  
+  const deleteContacts = id => {
+      dispatch(removeContacts(id))
+    // setContacts(contacts.filter(contact => contact.id !== id))
+  }
 
      return (
       <StyledApp>
         <h1>Phonebook</h1>
-        <FormByFormik addContact={addContact} />
+         <FormByFormik addContact={addContact} />
+         {/* <FormByFormik /> */}
         <h2>Contacts</h2>
-        <Filter onChange={filterContacts} value={filter}/>
+        <Filter onChange={setFilterContacts} value={filter}/>
         <ContactsList data={filteredArray} onClick={deleteContacts} />  
      
      </StyledApp>
