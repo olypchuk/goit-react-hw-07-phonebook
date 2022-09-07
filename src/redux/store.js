@@ -1,4 +1,3 @@
-// import { createStore } from 'redux'
 import { configureStore } from '@reduxjs/toolkit'
 import contactsSlice from './contactsSlice'
 import filterSlice from './filterSlice'
@@ -19,13 +18,18 @@ import storage from 'redux-persist/lib/storage'
 const persistConfig = {
   key: 'root',
   storage,
+  blacklist:['filter']
 }
- const rootReducer = combineReducers({
-   contacts: contactsSlice,
-    filter: filterSlice
+ const Reducer = combineReducers({
+   items: contactsSlice,
+  filter: filterSlice
+ })
+
+const rootReducer = combineReducers({
+  contacts:Reducer
 })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
- 
+
 export const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>

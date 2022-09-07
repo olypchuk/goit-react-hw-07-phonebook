@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import shortid from "shortid";
 
 export const contactsSlice = createSlice({
-  name: 'contacts',
+  name: 'items',
   initialState: [],
   reducers: {
     ADD_CONTACTS: {
@@ -18,7 +18,6 @@ export const contactsSlice = createSlice({
         }
     
       }
-
 
     },
     REMOVE_CONTACTS:{

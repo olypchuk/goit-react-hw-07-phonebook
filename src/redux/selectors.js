@@ -1,3 +1,4 @@
+
 export const filterHandleChange = (arr, filter) => {
   if (!arr) return
   if(!filter)return arr
@@ -5,3 +6,6 @@ export const filterHandleChange = (arr, filter) => {
       || contact.number.includes(filter.trim()))
     return filteredArray
   }
+export const getContacts = ({ contacts }) => contacts.items
+export const filterContacts = ({ contacts }) => contacts.filter
+ export  const sortedContactsFunction= (contacts) => [...contacts].sort((a, b) => a.name.localeCompare(b.name))

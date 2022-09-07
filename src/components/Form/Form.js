@@ -4,8 +4,11 @@ import { FormStyled } from "./Form.styled"
 import { PropTypes } from "prop-types"
 import { Formik, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup'
+import { useDispatch,useSelector } from "react-redux";
+import { ADD_CONTACTS } from "redux/contactsSlice";
+import { getContacts } from "redux/selectors";
 
-
+import { Notify } from "notiflix";
 const schema = yup.object().shape({
   name: yup.string()
    
@@ -28,13 +31,24 @@ export const INITIAL_STATE = {
 }
 let showId = shortid.generate()  
 
-export const FormByFormik = ({ addContact }) => {
+export const FormByFormik = () => {
+
+  const dispatch = useDispatch()
+  const contactsApp = useSelector(getContacts)
 
   
-  const handleSubmit = (value, { resetForm }) => {
+  const handleSubmit = (payload, { resetForm }) => {
 
-    addContact(value)
+      const findSameNumber=contactsApp?.find(contact=>contact.name.toLowerCase()===payload.name.toLowerCase())
+          if (findSameNumber) {
+            Notify.failure("this name already in list")
+            return
+            } 
+    dispatch(ADD_CONTACTS(payload))
     resetForm()
+        return contactsApp
+   
+    
   }
   return (<Formik
     initialValues={INITIAL_STATE}
@@ -66,7 +80,7 @@ export const FormByFormik = ({ addContact }) => {
 
 FormByFormik.propTypes = {
   initialValues: PropTypes.object,
-  addContact:PropTypes.func.isRequired,
+  onSubmit:PropTypes.func,
   validationSchema:PropTypes.object
 
 }
