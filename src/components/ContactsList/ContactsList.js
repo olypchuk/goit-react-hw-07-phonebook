@@ -4,8 +4,8 @@ export const ContactsList = ({ data,onClick }) => {
 
   return <ul>
     {data?.map(item => { 
-      const { id, name, number } = item;
-        return <StyledContainer key={id} ><li>{name} :{number}
+      const { name, phone,id } = item;
+        return <StyledContainer key={id} ><li>{name}<p>{phone}</p>
        </li><button type="button" onClick={()=>onClick(id)}>delete</button></StyledContainer>
     })}
           
@@ -28,9 +28,10 @@ const StyledContainer=styled.div`
     `
 ContactsList.propTypes = {
   data: PropTypes.arrayOf(PropTypes.exact({
+  createdAt:PropTypes.string.isRequired,
   id:PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  number:PropTypes.string.isRequired
+  phone:PropTypes.string.isRequired
   })),
   onClick:PropTypes.func.isRequired
     }

@@ -5,10 +5,10 @@ import { PropTypes } from "prop-types"
 import { Formik, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup'
 import { useDispatch,useSelector } from "react-redux";
-import { ADD_CONTACTS } from "redux/contactsSlice";
+import { fetchAddContacts } from "redux/contacts-operations";
 import { getContacts } from "redux/selectors";
+// import { Notify } from "notiflix";
 
-import { Notify } from "notiflix";
 const schema = yup.object().shape({
   name: yup.string()
    
@@ -16,7 +16,7 @@ const schema = yup.object().shape({
     .required("Please enter name")
     .matches(/^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/, "Must be only letters"),
 
-  number: yup.string()
+  phone: yup.string()
     .required('Please enter number')
     .min(6)
     .max(15)
@@ -27,28 +27,22 @@ const schema = yup.object().shape({
 
 export const INITIAL_STATE = {
   name: '',
-  number: ''
+  phone: ''
 }
+
 let showId = shortid.generate()  
 
 export const FormByFormik = () => {
 
   const dispatch = useDispatch()
-  const contactsApp = useSelector(getContacts)
+  const { contacts } = useSelector(getContacts)
 
-  
   const handleSubmit = (payload, { resetForm }) => {
 
-      const findSameNumber=contactsApp?.find(contact=>contact.name.toLowerCase()===payload.name.toLowerCase())
-          if (findSameNumber) {
-            Notify.failure("this name already in list")
-            return
-            } 
-    dispatch(ADD_CONTACTS(payload))
-    resetForm()
-        return contactsApp
-   
-    
+        dispatch(fetchAddContacts(payload))
+        resetForm()
+        return contacts
+      
   }
   return (<Formik
     initialValues={INITIAL_STATE}
@@ -63,14 +57,14 @@ export const FormByFormik = () => {
         placeholder="enter name"
         />
       <ErrorMessage name="name"/>
-     <label htmlFor="number">Number</label> 
+     <label htmlFor="phone">Number</label> 
           <Field
         id={showId}
         type="tel"
-        name="number"
+        name="phone"
         placeholder="enter number"
         />
-      <ErrorMessage name="number"/>
+      <ErrorMessage name="phone"/>
         <button type="submit">add contact</button>
   </FormStyled>
 </Formik>)
