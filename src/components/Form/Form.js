@@ -1,6 +1,6 @@
 import React from "react"
 import shortid from "shortid"
-import { FormStyled } from "./Form.styled"
+import { FormStyled ,FormButton} from "./Form.styled"
 import { PropTypes } from "prop-types"
 import { Formik, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup'
@@ -65,7 +65,7 @@ export const FormByFormik = () => {
         placeholder="enter number"
         />
       <ErrorMessage name="phone"/>
-        <button type="submit">add contact</button>
+        <FormButton type="submit">add contact</FormButton>
   </FormStyled>
 </Formik>)
 

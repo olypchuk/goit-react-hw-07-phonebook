@@ -6,8 +6,8 @@ import { FormByFormik } from "./Form/Form";
 import { useDispatch ,useSelector} from "react-redux";
 import { setFilter } from "redux/filterSlice";
 import { filterHandleChange, getContacts, filterContacts, sortedContactsFunction } from "redux/selectors";
-import { fetchDeleteContacts } from "redux/contacts-operations";
-import { fetchAllContacts } from "redux/contacts-operations";
+import { fetchDeleteContacts,fetchAllContacts } from "redux/contacts-operations";
+
 
 
 export function App() {
